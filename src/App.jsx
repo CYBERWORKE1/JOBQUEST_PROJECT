@@ -5,6 +5,8 @@ import JobSeekerDashboard from "./components/JobSeekerDashboard";
 import EmployerDashboard from "./components/EmployerDashboard";
 import JobListings from "./components/JobListings";
 import About from "./components/About";
+import SignIn from "./components/SignIn";
+import SignUp from "./components/SignUp";
 
 function App() {
   const [currentView, setCurrentView] = useState("home");
@@ -12,6 +14,7 @@ function App() {
 
   const renderCurrentView = () => {
     switch (currentView) {
+
       case "home":
         return (
           <>
@@ -22,6 +25,12 @@ function App() {
             <About />
           </>
         );
+
+      case "signin":
+        return <SignIn setCurrentView={setCurrentView} />;
+
+      case "signup":
+        return <SignUp setCurrentView={setCurrentView} />;
 
       case "jobseeker":
         return <JobSeekerDashboard />;
@@ -54,6 +63,7 @@ function App() {
           currentView={currentView}
           setCurrentView={setCurrentView}
           userType={userType}
+          setUserType={setUserType}
         />
 
         {renderCurrentView()}

@@ -7,12 +7,12 @@ import {
   FaBolt,
 } from "react-icons/fa";
 
-const Header = ({ currentView, setCurrentView, userType }) => {
+const Header = ({ currentView, setCurrentView, userType, setUserType }) => {
   return (
     <header className="backdrop-blur-lg bg-black/20 border-b border-white/10 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          
+
           {/* Logo */}
           <div
             className="flex items-center space-x-2 cursor-pointer group"
@@ -85,16 +85,35 @@ const Header = ({ currentView, setCurrentView, userType }) => {
           <div className="flex items-center space-x-4">
             {!userType ? (
               <div className="flex items-center space-x-2">
-                <button className="text-gray-300 hover:text-white px-4 py-2 rounded-lg hover:bg-white/5 transition-all duration-300">
+                <button
+                  onClick={() => setCurrentView("signin")}
+                  className="text-gray-300 hover:text-white px-4 py-2 rounded-lg hover:bg-white/5 transition-all duration-300"
+                >
                   Sign In
                 </button>
-                <button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-white px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105">
+
+                <button
+                  onClick={() => setCurrentView("signup")}
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-white px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105"
+                >
                   Sign Up
                 </button>
               </div>
             ) : (
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
-                <FaUser className="text-white text-sm" />
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                  <FaUser className="text-white text-sm" />
+                </div>
+
+                <button
+                  onClick={() => {
+                    setUserType(null);
+                    setCurrentView("home");
+                  }}
+                  className="text-gray-300 hover:text-red-400 transition-colors duration-200"
+                >
+                  Logout
+                </button>
               </div>
             )}
           </div>
