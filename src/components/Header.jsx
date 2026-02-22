@@ -6,111 +6,107 @@ import {
   FaHome,
   FaBolt,
 } from "react-icons/fa";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const Header = ({ currentView, setCurrentView, userType, setUserType }) => {
+const Header = ({
+  isAuthenticated,
+  setIsAuthenticated,
+  userType,
+  setUserType,
+}) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("userType");
+    setIsAuthenticated(false);
+    setUserType(null);
+    navigate("/");
+  };
+
   return (
-    <header className="backdrop-blur-lg bg-black/20 border-b border-white/10 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 bg-[#0f172a]/80 backdrop-blur-xl border-b border-white/5">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
           <div
-            className="flex items-center space-x-2 cursor-pointer group"
-            onClick={() => setCurrentView("home")}
+            onClick={() => navigate("/")}
+            className="flex items-center space-x-3 cursor-pointer"
           >
-            <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 group-hover:from-blue-400 group-hover:to-purple-500 transition-all duration-300">
+            <div className="p-2 rounded-lg bg-blue-700">
               <FaBolt className="text-white text-lg" />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="text-2xl font-semibold text-blue-400 tracking-wide">
               JobQuest
             </span>
           </div>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <button
-              onClick={() => setCurrentView("home")}
-              className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-300 ${
-                currentView === "home"
-                  ? "text-blue-400 bg-blue-400/10"
-                  : "text-gray-300 hover:text-white hover:bg-white/5"
-              }`}
-            >
-              <FaHome className="text-sm" />
-              <span>Home</span>
-            </button>
+          <nav className="hidden md:flex items-center space-x-6">
 
-            <button
-              onClick={() => setCurrentView("jobs")}
-              className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-300 ${
-                currentView === "jobs"
-                  ? "text-blue-400 bg-blue-400/10"
-                  : "text-gray-300 hover:text-white hover:bg-white/5"
-              }`}
-            >
-              <FaSearch className="text-sm" />
-              <span>Find Jobs</span>
-            </button>
+            <NavButton
+              active={currentPath === "/"}
+              onClick={() => navigate("/")}
+              icon={<FaHome />}
+              label="Home"
+            />
 
-            {userType === "jobseeker" && (
-              <button
-                onClick={() => setCurrentView("jobseeker")}
-                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-300 ${
-                  currentView === "jobseeker"
-                    ? "text-blue-400 bg-blue-400/10"
-                    : "text-gray-300 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                <FaUser className="text-sm" />
-                <span>Dashboard</span>
-              </button>
+            <NavButton
+              active={currentPath === "/jobs"}
+              onClick={() => navigate("/jobs")}
+              icon={<FaSearch />}
+              label="Find Jobs"
+            />
+
+            {isAuthenticated && userType === "jobseeker" && (
+              <NavButton
+                active={currentPath === "/jobseeker"}
+                onClick={() => navigate("/jobseeker")}
+                icon={<FaUser />}
+                label="Dashboard"
+              />
             )}
 
-            {userType === "employer" && (
-              <button
-                onClick={() => setCurrentView("employer")}
-                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-300 ${
-                  currentView === "employer"
-                    ? "text-blue-400 bg-blue-400/10"
-                    : "text-gray-300 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                <FaBriefcase className="text-sm" />
-                <span>Dashboard</span>
-              </button>
+            {isAuthenticated && userType === "employer" && (
+              <NavButton
+                active={currentPath === "/employer"}
+                onClick={() => navigate("/employer")}
+                icon={<FaBriefcase />}
+                label="Dashboard"
+              />
             )}
           </nav>
 
           {/* User Actions */}
           <div className="flex items-center space-x-4">
-            {!userType ? (
-              <div className="flex items-center space-x-2">
+            {!isAuthenticated ? (
+              <>
                 <button
-                  onClick={() => setCurrentView("signin")}
-                  className="text-gray-300 hover:text-white px-4 py-2 rounded-lg hover:bg-white/5 transition-all duration-300"
+                  onClick={() => navigate("/signin")}
+                  className="text-gray-400 hover:text-white transition"
                 >
                   Sign In
                 </button>
 
                 <button
-                  onClick={() => setCurrentView("signup")}
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-white px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105"
+                  onClick={() => navigate("/signup")}
+                  className="px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded-lg transition"
                 >
                   Sign Up
                 </button>
-              </div>
+              </>
             ) : (
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                <div className="w-9 h-9 rounded-full bg-blue-700 flex items-center justify-center">
                   <FaUser className="text-white text-sm" />
                 </div>
 
                 <button
-                  onClick={() => {
-                    setUserType(null);
-                    setCurrentView("home");
-                  }}
-                  className="text-gray-300 hover:text-red-400 transition-colors duration-200"
+                  onClick={handleLogout}
+                  className="text-gray-400 hover:text-red-400 transition"
                 >
                   Logout
                 </button>
@@ -123,5 +119,19 @@ const Header = ({ currentView, setCurrentView, userType, setUserType }) => {
     </header>
   );
 };
+
+const NavButton = ({ active, onClick, icon, label }) => (
+  <button
+    onClick={onClick}
+    className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition ${
+      active
+        ? "bg-blue-900/40 text-blue-400"
+        : "text-gray-400 hover:text-white hover:bg-white/5"
+    }`}
+  >
+    <span className="text-sm">{icon}</span>
+    <span>{label}</span>
+  </button>
+);
 
 export default Header;

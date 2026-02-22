@@ -1,27 +1,40 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-const SignIn = ({ setCurrentView }) => {
+const SignIn = ({ setIsAuthenticated, setUserType }) => {
+  const navigate = useNavigate();
+  const [role, setRole] = useState("jobseeker");
+
+  const handleLogin = () => {
+    localStorage.setItem("isAuthenticated", "true");
+    localStorage.setItem("userType", role);
+
+    setIsAuthenticated(true);
+    setUserType(role);
+
+    if (role === "jobseeker") {
+      navigate("/jobseeker");
+    } else {
+      navigate("/employer");
+    }
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-[70vh]">
-      <div className="bg-white/5 backdrop-blur-lg p-8 rounded-xl border border-white/10 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">
-          Sign In
-        </h2>
+    <div className="flex justify-center items-center min-h-[70vh]">
+      <div className="bg-white/5 p-8 rounded-xl border border-white/10 w-96">
+        <h2 className="text-2xl text-white mb-6">Sign In</h2>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full mb-4 p-3 rounded-lg bg-white/10 text-white border border-white/20"
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full mb-6 p-3 rounded-lg bg-white/10 text-white border border-white/20"
-        />
+        <select
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          className="w-full mb-4 p-3 bg-white/10 text-white"
+        >
+          <option value="jobseeker">Job Seeker</option>
+          <option value="employer">Employer</option>
+        </select>
 
         <button
-          onClick={() => setCurrentView("home")}
+          onClick={handleLogin}
           className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg"
         >
           Login

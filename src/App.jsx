@@ -1,73 +1,103 @@
-import React, { useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
+import About from "./components/About";
 import JobSeekerDashboard from "./components/JobSeekerDashboard";
 import EmployerDashboard from "./components/EmployerDashboard";
 import JobListings from "./components/JobListings";
-import About from "./components/About";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const [currentView, setCurrentView] = useState("home");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userType, setUserType] = useState(null);
 
-  const renderCurrentView = () => {
-    switch (currentView) {
+  useEffect(() => {
+    const auth = localStorage.getItem("isAuthenticated");
+    const role = localStorage.getItem("userType");
 
-      case "home":
-        return (
-          <>
-            <Hero
-              onGetStarted={setCurrentView}
-              onUserTypeSelect={setUserType}
-            />
-            <About />
-          </>
-        );
-
-      case "signin":
-        return <SignIn setCurrentView={setCurrentView} />;
-
-      case "signup":
-        return <SignUp setCurrentView={setCurrentView} />;
-
-      case "jobseeker":
-        return <JobSeekerDashboard />;
-
-      case "employer":
-        return <EmployerDashboard />;
-
-      case "jobs":
-        return <JobListings />;
-
-      default:
-        return (
-          <>
-            <Hero
-              onGetStarted={setCurrentView}
-              onUserTypeSelect={setUserType}
-            />
-            <About />
-          </>
-        );
-    }
-  };
+    if (auth === "true") setIsAuthenticated(true);
+    if (role) setUserType(role);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22%239C92AC%22 fill-opacity=%220.05%22%3E%3Ccircle cx=%2230%22 cy=%2230%22 r=%221%22/%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+    <div className="min-h-screen bg-[#0b0f19] text-white">
+      <Header
+        isAuthenticated={isAuthenticated}
+        setIsAuthenticated={setIsAuthenticated}
+        userType={userType}
+        setUserType={setUserType}
+      />
 
-      <div className="relative z-10">
-        <Header
-          currentView={currentView}
-          setCurrentView={setCurrentView}
-          userType={userType}
-          setUserType={setUserType}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
+              <About />
+            </>
+          }
         />
 
-        {renderCurrentView()}
-      </div>
+        <Route path="/jobs" element={<JobListings />} />
+
+        <Route
+          path="/signin"
+          element={
+            isAuthenticated ? (
+              <Navigate
+                to={userType === "employer" ? "/employer" : "/jobseeker"}
+                replace
+              />
+            ) : (
+              <SignIn
+                setIsAuthenticated={setIsAuthenticated}
+                setUserType={setUserType}
+              />
+            )
+          }
+        />
+
+        <Route
+          path="/signup"
+          element={
+            isAuthenticated ? (
+              <Navigate
+                to={userType === "employer" ? "/employer" : "/jobseeker"}
+                replace
+              />
+            ) : (
+              <SignUp
+                setIsAuthenticated={setIsAuthenticated}
+                setUserType={setUserType}
+              />
+            )
+          }
+        />
+
+        <Route
+          path="/jobseeker"
+          element={
+            <ProtectedRoute allowedRole="jobseeker">
+              <JobSeekerDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/employer"
+          element={
+            <ProtectedRoute allowedRole="employer">
+              <EmployerDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </div>
   );
 }
