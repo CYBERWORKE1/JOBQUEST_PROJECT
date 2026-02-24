@@ -23,81 +23,79 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0b0f19] text-white">
-      <Header
-        isAuthenticated={isAuthenticated}
-        setIsAuthenticated={setIsAuthenticated}
-        userType={userType}
-        setUserType={setUserType}
+    <div className="relative min-h-screen text-white">
+
+      {/* Background Image */}
+      <div
+        className="fixed inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/night.jpg')" }}
       />
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Hero />
-              <About />
-            </>
-          }
+      {/* Dark Overlay */}
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-[2px]" />
+
+      {/* Main Content */}
+      <div className="relative z-10">
+        <Header
+          isAuthenticated={isAuthenticated}
+          setIsAuthenticated={setIsAuthenticated}
+          userType={userType}
+          setUserType={setUserType}
         />
 
-        <Route path="/jobs" element={<JobListings />} />
+        <Routes>
+          <Route path="/" element={<Hero />} />
+          <Route path="/jobs" element={<JobListings />} />
 
-        <Route
-          path="/signin"
-          element={
-            isAuthenticated ? (
-              <Navigate
-                to={userType === "employer" ? "/employer" : "/jobseeker"}
-                replace
-              />
-            ) : (
-              <SignIn
-                setIsAuthenticated={setIsAuthenticated}
-                setUserType={setUserType}
-              />
-            )
-          }
-        />
+          <Route
+            path="/signin"
+            element={
+              isAuthenticated ? (
+                <Navigate to={userType === "employer" ? "/employer" : "/jobseeker"} />
+              ) : (
+                <SignIn
+                  setIsAuthenticated={setIsAuthenticated}
+                  setUserType={setUserType}
+                />
+              )
+            }
+          />
 
-        <Route
-          path="/signup"
-          element={
-            isAuthenticated ? (
-              <Navigate
-                to={userType === "employer" ? "/employer" : "/jobseeker"}
-                replace
-              />
-            ) : (
-              <SignUp
-                setIsAuthenticated={setIsAuthenticated}
-                setUserType={setUserType}
-              />
-            )
-          }
-        />
+          <Route
+            path="/signup"
+            element={
+              isAuthenticated ? (
+                <Navigate to={userType === "employer" ? "/employer" : "/jobseeker"} />
+              ) : (
+                <SignUp
+                  setIsAuthenticated={setIsAuthenticated}
+                  setUserType={setUserType}
+                />
+              )
+            }
+          />
 
-        <Route
-          path="/jobseeker"
-          element={
-            <ProtectedRoute allowedRole="jobseeker">
-              <JobSeekerDashboard />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/jobseeker"
+            element={
+              <ProtectedRoute allowedRole="jobseeker">
+                <JobSeekerDashboard />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/employer"
-          element={
-            <ProtectedRoute allowedRole="employer">
-              <EmployerDashboard />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/employer"
+            element={
+              <ProtectedRoute allowedRole="employer">
+                <EmployerDashboard />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </div>
     </div>
   );
 }
