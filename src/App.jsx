@@ -24,19 +24,14 @@ function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen flex flex-col text-white">
+    <div className="app-wrapper">
 
-      {/* Background Image */}
-      <div
-        className="fixed inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/night.jpg')" }}
-      />
+      {/* Background Spheres */}
+      <div className="bg-sphere s-left"></div>
+      <div className="bg-sphere s-right"></div>
+      <div className="bg-sphere s-bottom"></div>
 
-      {/* Dark Overlay */}
-      <div className="fixed inset-0 bg-black/70 backdrop-blur-[2px]" />
-
-      {/* Main Content Wrapper */}
-      <div className="relative z-10 flex flex-col flex-grow">
+      <div className="content-layer">
 
         <Header
           isAuthenticated={isAuthenticated}
@@ -45,7 +40,7 @@ function App() {
           setUserType={setUserType}
         />
 
-        <div className="flex-grow">
+        <main className="page-content">
           <Routes>
             <Route path="/" element={<Hero />} />
             <Route path="/about" element={<About />} />
@@ -111,9 +106,8 @@ function App() {
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
-        </div>
+        </main>
 
-        {/* Footer Always at Bottom */}
         <Footer />
 
       </div>

@@ -27,30 +27,30 @@ const JobPostingForm = ({ onClose }) => {
   };
 
   return (
-    <div className="backdrop-blur-lg bg-white/5 rounded-xl p-8 border border-white/10">
+    <div className="relative backdrop-blur-2xl bg-white/5 rounded-2xl p-10 border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-3">
-          <div className="p-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-600">
-            <FaBriefcase className="text-white text-lg" />
+      <div className="flex items-center justify-between mb-10">
+        <div className="flex items-center space-x-4">
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-600 shadow-lg">
+            <FaBriefcase className="text-white text-xl" />
           </div>
-          <h2 className="text-2xl font-bold text-white">
+          <h2 className="text-3xl font-bold text-white tracking-wide">
             Create Job Posting
           </h2>
         </div>
 
         <button
           onClick={onClose}
-          className="p-2 hover:bg-white/10 rounded-lg transition-all duration-200"
+          className="p-3 rounded-xl hover:bg-white/10 transition-all duration-300"
         >
-          <FaTimes className="text-gray-400" />
+          <FaTimes className="text-gray-400 hover:text-white text-lg" />
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-8">
 
-        {/* Basic Information */}
+        {/* Basic Info */}
         <div className="grid md:grid-cols-2 gap-6">
           <input
             type="text"
@@ -59,7 +59,7 @@ const JobPostingForm = ({ onClose }) => {
             onChange={handleChange}
             required
             placeholder="Job Title"
-            className="input"
+            className="form-input"
           />
 
           <input
@@ -69,27 +69,26 @@ const JobPostingForm = ({ onClose }) => {
             onChange={handleChange}
             required
             placeholder="Company Name"
-            className="input"
+            className="form-input"
           />
         </div>
 
-        {/* Location, Type, Salary */}
+        {/* Location / Type / Salary */}
         <div className="grid md:grid-cols-3 gap-6">
-
           <input
             type="text"
             name="location"
             value={formData.location}
             onChange={handleChange}
             placeholder="Location"
-            className="input"
+            className="form-input"
           />
 
           <select
             name="type"
             value={formData.type}
             onChange={handleChange}
-            className="input"
+            className="form-input"
           >
             <option value="full-time">Full Time</option>
             <option value="part-time">Part Time</option>
@@ -103,7 +102,7 @@ const JobPostingForm = ({ onClose }) => {
             value={formData.salary}
             onChange={handleChange}
             placeholder="Salary Range"
-            className="input"
+            className="form-input"
           />
         </div>
 
@@ -115,7 +114,7 @@ const JobPostingForm = ({ onClose }) => {
           required
           rows={6}
           placeholder="Job Description"
-          className="input"
+          className="form-input resize-none"
         />
 
         {/* Requirements */}
@@ -126,7 +125,7 @@ const JobPostingForm = ({ onClose }) => {
           required
           rows={4}
           placeholder="Requirements"
-          className="input"
+          className="form-input resize-none"
         />
 
         {/* Keywords */}
@@ -135,25 +134,25 @@ const JobPostingForm = ({ onClose }) => {
           name="keywords"
           value={formData.keywords}
           onChange={handleChange}
-          placeholder="React, Node.js, AWS..."
-          className="input"
+          placeholder="Skills (React, Node.js, AWS...)"
+          className="form-input"
         />
 
         {/* Buttons */}
-        <div className="flex space-x-4 pt-6">
-          <button
-            type="submit"
-            className="flex-1 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg hover:from-purple-400 hover:to-pink-500 transition-all duration-300"
-          >
-            Post Job
-          </button>
-
+        <div className="flex justify-end gap-4 pt-4">
           <button
             type="button"
             onClick={onClose}
-            className="px-6 py-3 bg-white/10 border border-white/20 text-gray-300 rounded-lg hover:bg-white/20 transition-all duration-300"
+            className="px-8 py-3 rounded-xl border border-white/20 text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-300"
           >
             Cancel
+          </button>
+
+          <button
+            type="submit"
+            className="px-10 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-300"
+          >
+            Post Job
           </button>
         </div>
 
