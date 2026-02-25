@@ -6,100 +6,83 @@ import {
   FaBullseye,
   FaAward,
 } from "react-icons/fa";
+import JobSearchBar from "./JobSearchBar";
+import { useNavigate } from "react-router-dom";
 
-const Hero = ({ onGetStarted, onUserTypeSelect }) => {
+const Hero = () => {
+  const navigate = useNavigate();
+
   const handleRoleSelect = (role) => {
-    onUserTypeSelect(role);
-    onGetStarted(role);
+    localStorage.setItem("userType", role);
+    localStorage.setItem("isAuthenticated", "true");
+
+    if (role === "jobseeker") {
+      navigate("/jobseeker");
+    } else {
+      navigate("/employer");
+    }
   };
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative min-h-screen animated-bg overflow-hidden">
 
-      {/* Soft Blue Ambient Glow */}
-      <div className="absolute inset-0">
-        <div className="absolute top-32 left-20 w-72 h-72 bg-blue-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-32 right-20 w-96 h-96 bg-indigo-700/10 rounded-full blur-3xl"></div>
-      </div>
+      {/* Soft White Floating Lights */}
+      <div className="absolute top-[-200px] left-[-200px] w-[600px] h-[600px] bg-white/10 rounded-full blur-[140px]" />
+      <div className="absolute bottom-[-200px] right-[-200px] w-[600px] h-[600px] bg-white/5 rounded-full blur-[140px]" />
 
-      <div className="relative max-w-7xl mx-auto px-6 py-24">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-28">
 
-        {/* Hero Section */}
-        <div className="text-center space-y-8 mb-24">
+        <div className="text-center space-y-10 mb-20 fade-up">
 
-          <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-            <span className="text-white">
-              Find Your
-            </span>
+          <h1 className="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight">
+            <span className="text-white">Find Your</span>
             <br />
-            <span className="text-blue-400">
+            <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
               Dream Career
             </span>
           </h1>
 
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
             AI-powered job matching platform connecting talent with the right
-            opportunities using intelligent ATS scoring and smart compatibility
-            analysis.
+            opportunities using intelligent ATS scoring.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+          <JobSearchBar />
+
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8">
 
             <button
               onClick={() => handleRoleSelect("jobseeker")}
-              className="px-8 py-4 bg-blue-800 hover:bg-blue-700 rounded-xl text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-blue-900/40"
+              className="glass-card hover-lift px-10 py-4 text-white font-medium flex items-center space-x-3 transition-all duration-300"
             >
-              <div className="flex items-center space-x-2">
-                <FaUpload />
-                <span>I'm Looking for Jobs</span>
-              </div>
+              <FaUpload className="text-gray-200" />
+              <span>I'm Looking for Jobs</span>
             </button>
 
             <button
               onClick={() => handleRoleSelect("employer")}
-              className="px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl text-white font-medium transition-all duration-300 backdrop-blur-xl"
+              className="glass-card hover-lift px-10 py-4 text-white font-medium flex items-center space-x-3 transition-all duration-300"
             >
-              <div className="flex items-center space-x-2">
-                <FaBriefcase />
-                <span>I'm Hiring Talent</span>
-              </div>
+              <FaBriefcase className="text-gray-300" />
+              <span>I'm Hiring Talent</span>
             </button>
 
           </div>
         </div>
 
         {/* Features */}
-        <div className="grid md:grid-cols-3 gap-8 mb-24">
-
-          <FeatureCard
-            icon={FaBolt}
-            title="AI-Powered ATS Parsing"
-            description="Advanced resume analysis with intelligent keyword detection and smart ranking."
-          />
-
-          <FeatureCard
-            icon={FaBullseye}
-            title="Smart Keyword Matching"
-            description="Automatically match skills and job requirements with high precision."
-          />
-
-          <FeatureCard
-            icon={FaAward}
-            title="Quality Scoring"
-            description="Get compatibility scores that highlight the best opportunities instantly."
-          />
-
+        <div className="grid md:grid-cols-3 gap-10 mb-28 fade-up">
+          <FeatureCard icon={FaBolt} title="AI-Powered ATS Parsing" />
+          <FeatureCard icon={FaBullseye} title="Smart Keyword Matching" />
+          <FeatureCard icon={FaAward} title="Quality Scoring" />
         </div>
 
         {/* Stats */}
-        <div className="grid md:grid-cols-4 gap-8">
-
+        <div className="grid md:grid-cols-4 gap-10 fade-up">
           <StatCard number="50K+" label="Active Jobs" />
           <StatCard number="95%" label="Match Accuracy" />
           <StatCard number="10K+" label="Companies" />
           <StatCard number="2x" label="Faster Hiring" />
-
         </div>
 
       </div>
@@ -107,33 +90,24 @@ const Hero = ({ onGetStarted, onUserTypeSelect }) => {
   );
 };
 
-const FeatureCard = ({ icon: Icon, title, description }) => {
-  return (
-    <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 transition hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-900/20">
-      <div className="mb-4 p-3 inline-flex rounded-xl bg-blue-900/40">
-        <Icon className="text-blue-400 text-xl" />
-      </div>
-      <h3 className="text-xl font-semibold text-white mb-3">
-        {title}
-      </h3>
-      <p className="text-gray-400 leading-relaxed">
-        {description}
-      </p>
+const FeatureCard = ({ icon: Icon, title }) => (
+  <div className="glass-card hover-lift p-10 text-center transition-all duration-500">
+    <div className="mb-6 p-4 inline-flex rounded-2xl bg-white/10">
+      <Icon className="text-gray-200 text-2xl" />
     </div>
-  );
-};
+    <h3 className="text-xl font-semibold text-white tracking-wide">
+      {title}
+    </h3>
+  </div>
+);
 
-const StatCard = ({ number, label }) => {
-  return (
-    <div className="text-center space-y-2">
-      <div className="text-4xl font-bold text-blue-400">
-        {number}
-      </div>
-      <div className="text-gray-400">
-        {label}
-      </div>
+const StatCard = ({ number, label }) => (
+  <div className="text-center space-y-3 hover-lift transition-all duration-500">
+    <div className="text-5xl font-extrabold bg-gradient-to-r from-white via-gray-300 to-gray-500 bg-clip-text text-transparent">
+      {number}
     </div>
-  );
-};
+    <div className="text-gray-300 text-lg">{label}</div>
+  </div>
+);
 
 export default Hero;

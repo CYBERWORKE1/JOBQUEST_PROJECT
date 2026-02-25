@@ -9,6 +9,7 @@ import JobListings from "./components/JobListings";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Footer from "./components/Footer";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -23,7 +24,7 @@ function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen text-white">
+    <div className="relative min-h-screen flex flex-col text-white">
 
       {/* Background Image */}
       <div
@@ -34,8 +35,9 @@ function App() {
       {/* Dark Overlay */}
       <div className="fixed inset-0 bg-black/70 backdrop-blur-[2px]" />
 
-      {/* Main Content */}
-      <div className="relative z-10">
+      {/* Main Content Wrapper */}
+      <div className="relative z-10 flex flex-col flex-grow">
+
         <Header
           isAuthenticated={isAuthenticated}
           setIsAuthenticated={setIsAuthenticated}
@@ -43,58 +45,77 @@ function App() {
           setUserType={setUserType}
         />
 
-        <Routes>
-          <Route path="/" element={<Hero />} />
-          <Route path="/jobs" element={<JobListings />} />
+        <div className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Hero />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/jobs" element={<JobListings />} />
 
-          <Route
-            path="/signin"
-            element={
-              isAuthenticated ? (
-                <Navigate to={userType === "employer" ? "/employer" : "/jobseeker"} />
-              ) : (
-                <SignIn
-                  setIsAuthenticated={setIsAuthenticated}
-                  setUserType={setUserType}
-                />
-              )
-            }
-          />
+            <Route
+              path="/signin"
+              element={
+                isAuthenticated ? (
+                  <Navigate
+                    to={
+                      userType === "employer"
+                        ? "/employer"
+                        : "/jobseeker"
+                    }
+                  />
+                ) : (
+                  <SignIn
+                    setIsAuthenticated={setIsAuthenticated}
+                    setUserType={setUserType}
+                  />
+                )
+              }
+            />
 
-          <Route
-            path="/signup"
-            element={
-              isAuthenticated ? (
-                <Navigate to={userType === "employer" ? "/employer" : "/jobseeker"} />
-              ) : (
-                <SignUp
-                  setIsAuthenticated={setIsAuthenticated}
-                  setUserType={setUserType}
-                />
-              )
-            }
-          />
+            <Route
+              path="/signup"
+              element={
+                isAuthenticated ? (
+                  <Navigate
+                    to={
+                      userType === "employer"
+                        ? "/employer"
+                        : "/jobseeker"
+                    }
+                  />
+                ) : (
+                  <SignUp
+                    setIsAuthenticated={setIsAuthenticated}
+                    setUserType={setUserType}
+                  />
+                )
+              }
+            />
 
-          <Route
-            path="/jobseeker"
-            element={
-              <ProtectedRoute allowedRole="jobseeker">
-                <JobSeekerDashboard />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/jobseeker"
+              element={
+                <ProtectedRoute allowedRole="jobseeker">
+                  <JobSeekerDashboard />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/employer"
-            element={
-              <ProtectedRoute allowedRole="employer">
-                <EmployerDashboard />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/employer"
+              element={
+                <ProtectedRoute allowedRole="employer">
+                  <EmployerDashboard />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </div>
+
+        {/* Footer Always at Bottom */}
+        <Footer />
+
       </div>
     </div>
   );
