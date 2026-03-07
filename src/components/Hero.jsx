@@ -1,22 +1,20 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import heroImage from "../assets/hero.png";
 
 const Hero = () => {
   const navigate = useNavigate();
 
   return (
     <section className="hero-section">
-
-      <div className="glass-card-hero">
+      <div className="hero-container">
 
         <div className="hero-left">
-          <h1>
-            Find Your <br /> Dream Career
-          </h1>
+          <h1>Find Your Dream Job</h1>
 
           <p>
-          Job matching platform connecting talent
-            with the right opportunities using intelligent ATS scoring.
+            Discover thousands of opportunities from top companies.
+            Upload your resume and get matched with the right career.
           </p>
 
           <div className="hero-buttons">
@@ -31,17 +29,20 @@ const Hero = () => {
               className="secondary-btn"
               onClick={() => navigate("/signup")}
             >
-              Post Jobs
+              Post a Job
             </button>
           </div>
         </div>
 
         <div className="hero-right">
-        
+          <img
+            src={heroImage}
+            alt="Job Search"
+            className="hero-image"
+          />
         </div>
 
       </div>
-
     </section>
   );
 };

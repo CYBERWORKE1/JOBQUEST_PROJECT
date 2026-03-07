@@ -26,10 +26,10 @@ function App() {
   return (
     <div className="app-wrapper">
 
-      {/* Background Spheres */}
-      <div className="bg-sphere s-left"></div>
-      <div className="bg-sphere s-right"></div>
-      <div className="bg-sphere s-bottom"></div>
+      {/* Background shapes */}
+      <div className="bg-shape shape-1"></div>
+      <div className="bg-shape shape-2"></div>
+      <div className="bg-shape shape-3"></div>
 
       <div className="content-layer">
 
@@ -51,11 +51,7 @@ function App() {
               element={
                 isAuthenticated ? (
                   <Navigate
-                    to={
-                      userType === "employer"
-                        ? "/employer"
-                        : "/jobseeker"
-                    }
+                    to={userType === "employer" ? "/employer" : "/jobseeker"}
                   />
                 ) : (
                   <SignIn
@@ -71,11 +67,7 @@ function App() {
               element={
                 isAuthenticated ? (
                   <Navigate
-                    to={
-                      userType === "employer"
-                        ? "/employer"
-                        : "/jobseeker"
-                    }
+                    to={userType === "employer" ? "/employer" : "/jobseeker"}
                   />
                 ) : (
                   <SignUp
