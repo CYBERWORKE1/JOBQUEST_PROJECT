@@ -1,157 +1,126 @@
-import React, { useState, useRef } from "react";
-import {
-  FaUpload,
-  FaFileAlt,
-  FaCheckCircle,
-  FaExclamationCircle,
-  FaBolt,
-} from "react-icons/fa";
+import { useState, useRef, useCallback } from "react";
+import { FaUpload, FaFilePdf, FaFileWord, FaTrash, FaCheckCircle, FaSpinner } from "react-icons/fa";
 
 const ResumeUpload = ({ onResumeUpload, onATSScore }) => {
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadStatus, setUploadStatus] = useState("idle");
-  const [fileName, setFileName] = useState("");
-  const [progress, setProgress] = useState(0);
-  const fileInputRef = useRef(null);
+  const [file, setFile]       = useState(null);
+  const [dragging, setDragging] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploaded, setUploaded]   = useState(false);
+  const [progress, setProgress]   = useState(0);
+  const fileRef = useRef();
 
-  const handleFileSelect = (event) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setFileName(file.name);
-      simulateUpload();
+  const handleFile = useCallback(async (f) => {
+    if (!f) return;
+    if (!f.name.match(/\.(pdf|doc|docx)$/i)) { alert("Please upload a PDF or Word doc."); return; }
+    if (f.size > 5 * 1024 * 1024) { alert("File must be under 5MB."); return; }
+
+    setFile(f); setUploading(true); setProgress(0); setUploaded(false);
+
+    for (let i = 0; i <= 100; i += 4) {
+      await new Promise(r => setTimeout(r, 55));
+      setProgress(Math.min(i, 100));
     }
+    await new Promise(r => setTimeout(r, 700));
+
+    const score = Math.floor(Math.random() * 26) + 72;
+    setUploading(false); setUploaded(true);
+    onResumeUpload(true); onATSScore(score);
+  }, [onResumeUpload, onATSScore]);
+
+  const onDrop = useCallback((e) => {
+    e.preventDefault(); setDragging(false);
+    handleFile(e.dataTransfer.files[0]);
+  }, [handleFile]);
+
+  const removeFile = () => {
+    setFile(null); setUploaded(false); setProgress(0);
+    onResumeUpload(false); onATSScore(null);
+    if (fileRef.current) fileRef.current.value = "";
   };
 
-  const simulateUpload = () => {
-    setIsUploading(true);
-    setUploadStatus("uploading");
-    setProgress(0);
+  const fileIcon = file?.name?.toLowerCase().endsWith(".pdf")
+    ? <FaFilePdf style={{ color: "#ef4444", fontSize: "28px" }} />
+    : <FaFileWord style={{ color: "#2563eb", fontSize: "28px" }} />;
 
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setIsUploading(false);
-          setUploadStatus("success");
-          onResumeUpload(true);
-
-          setTimeout(() => {
-            const score = Math.floor(Math.random() * 20) + 80;
-            onATSScore(score);
-          }, 1000);
-
-          return 100;
-        }
-        return prev + Math.random() * 15;
-      });
-    }, 100);
-  };
-
-  const triggerFileSelect = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
+  const fmtSize = (b) => b < 1024*1024 ? (b/1024).toFixed(1)+" KB" : (b/(1024*1024)).toFixed(1)+" MB";
 
   return (
-    <div className="backdrop-blur-lg bg-white/5 rounded-xl p-8 border border-white/10">
-      <div className="text-center space-y-6">
-
-        {/* Header */}
-        <div className="flex items-center justify-center space-x-3">
-          <div className="p-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600">
-            <FaUpload className="text-white text-lg" />
-          </div>
-          <h2 className="text-2xl font-bold text-white">
-            Upload Your Resume
-          </h2>
+    <div className="resume-upload-card">
+      <div className="resume-upload-header">
+        <div className="resume-upload-icon-wrap"><FaUpload /></div>
+        <div>
+          <h3 className="resume-upload-title">Resume Upload</h3>
+          <p className="resume-upload-sub">Upload your resume for instant ATS analysis</p>
         </div>
-
-        {/* Idle State */}
-        {uploadStatus === "idle" && (
-          <>
-            <p className="text-gray-300">
-              Upload your resume to get instant ATS scoring and job matching
-            </p>
-
-            <div
-              onClick={triggerFileSelect}
-              className="border-2 border-dashed border-white/20 rounded-xl p-12 hover:border-blue-400/50 transition-all duration-300 cursor-pointer"
-            >
-              <div className="flex flex-col items-center space-y-4">
-                <FaFileAlt className="text-blue-400 text-4xl" />
-                <p className="text-lg text-white font-semibold">
-                  Drop your resume here
-                </p>
-                <p className="text-gray-300">or click to browse files</p>
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* Uploading State */}
-        {uploadStatus === "uploading" && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-center space-x-3">
-              <FaBolt className="text-blue-400 animate-pulse" />
-              <span className="text-white font-semibold">
-                Processing {fileName}
-              </span>
-            </div>
-
-            <div className="w-full bg-white/10 rounded-full h-2">
-              <div
-                className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
-          </div>
-        )}
-
-        {/* Success State */}
-        {uploadStatus === "success" && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-center space-x-2 text-green-400">
-              <FaCheckCircle />
-              <span className="font-semibold">
-                Resume uploaded successfully!
-              </span>
-            </div>
-
-            <button
-              onClick={triggerFileSelect}
-              className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-400 hover:to-purple-500 transition-all duration-300"
-            >
-              Upload New Resume
-            </button>
-          </div>
-        )}
-
-        {/* Error State */}
-        {uploadStatus === "error" && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-center space-x-2 text-red-400">
-              <FaExclamationCircle />
-              <span className="font-semibold">Upload failed</span>
-            </div>
-
-            <button
-              onClick={triggerFileSelect}
-              className="px-6 py-2 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg hover:from-red-400 hover:to-pink-500 transition-all duration-300"
-            >
-              Try Again
-            </button>
-          </div>
-        )}
-
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".pdf,.doc,.docx"
-          onChange={handleFileSelect}
-          className="hidden"
-        />
       </div>
+
+      {!file ? (
+        <div
+          className={`resume-dropzone ${dragging ? "dragging" : ""}`}
+          onDrop={onDrop}
+          onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+          onDragLeave={() => setDragging(false)}
+          onClick={() => fileRef.current?.click()}
+        >
+          <input ref={fileRef} type="file" accept=".pdf,.doc,.docx" style={{ display:"none" }}
+            onChange={e => handleFile(e.target.files[0])} />
+          <div className="resume-dropzone-icon"><FaUpload /></div>
+          <p className="resume-dropzone-text">{dragging ? "Drop it here!" : "Drag & drop your resume"}</p>
+          <p className="resume-dropzone-sub">or click to browse files</p>
+          <div className="resume-formats">
+            <span className="resume-format-tag">PDF</span>
+            <span className="resume-format-tag">DOC</span>
+            <span className="resume-format-tag">DOCX</span>
+            <span className="resume-format-note">Max 5MB</span>
+          </div>
+        </div>
+      ) : (
+        <div className="resume-preview">
+          <div className="resume-preview-file">
+            <div className="resume-file-icon">{fileIcon}</div>
+            <div className="resume-file-info">
+              <div className="resume-file-name">{file.name}</div>
+              <div className="resume-file-size">{fmtSize(file.size)}</div>
+              {uploading && (
+                <div style={{ marginTop:"8px" }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"4px" }}>
+                    <span style={{ fontSize:"12px", color:"var(--text-muted)", fontWeight:500 }}>
+                      {progress < 100 ? "Uploading..." : "Running AI analysis..."}
+                    </span>
+                    <span style={{ fontSize:"12px", color:"var(--blue-primary)", fontWeight:700 }}>{progress}%</span>
+                  </div>
+                  <div className="resume-progress-bar">
+                    <div className="resume-progress-fill" style={{ width:`${progress}%` }} />
+                  </div>
+                </div>
+              )}
+              {uploaded && (
+                <div className="resume-success-badge">
+                  <FaCheckCircle style={{ color:"#22c55e" }} />
+                  <span>Uploaded & Analyzed ✓</span>
+                </div>
+              )}
+            </div>
+            <div>
+              {uploading
+                ? <FaSpinner style={{ color:"var(--blue-primary)", fontSize:"18px", animation:"spin .7s linear infinite" }} />
+                : <button className="resume-remove-btn" onClick={removeFile}><FaTrash /></button>
+              }
+            </div>
+          </div>
+          {uploaded && (
+            <div className="resume-tips">
+              <p className="resume-tips-title">💡 Quick tips to boost your score:</p>
+              <ul className="resume-tips-list">
+                <li>Add keywords from the job descriptions you're targeting</li>
+                <li>Quantify achievements (e.g., "Increased revenue by 30%")</li>
+                <li>Use standard headings: Experience, Skills, Education</li>
+                <li>Avoid tables, columns, images — ATS can't parse them</li>
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

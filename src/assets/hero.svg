@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" width="600" height="500">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#eff6ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5f3ff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="monitorFace" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f1f5f9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="monitorTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="monitorSide" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="personBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="deskGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e2e8f0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#cbd5e1;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cardGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#dbeafe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#bfdbfe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cardGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fce7f3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fbcfe8;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(37,99,235,0.18)"/>
+    </filter>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="rgba(0,0,0,0.12)"/>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <ellipse cx="295" cy="265" rx="230" ry="200" fill="url(#bgGrad)" opacity="0.7"/>
+
+  <!-- ══ DESK / PLATFORM ══ -->
+  <!-- Desk top face (isometric) -->
+  <polygon points="100,310 300,210 500,310 300,410" fill="url(#deskGrad)" filter="url(#softShadow)"/>
+  <!-- Desk front-left face -->
+  <polygon points="100,310 300,410 300,440 100,340" fill="#b0bec5"/>
+  <!-- Desk front-right face -->
+  <polygon points="300,410 500,310 500,340 300,440" fill="#90a4ae"/>
+
+  <!-- ══ MONITOR BODY (isometric) ══ -->
+  <!-- Monitor back top face -->
+  <polygon points="185,175 295,112 405,175 295,238" fill="url(#monitorTop)" filter="url(#shadow)"/>
+  <!-- Monitor left face -->
+  <polygon points="185,175 295,238 295,298 185,235" fill="url(#monitorSide)"/>
+  <!-- Monitor right face -->
+  <polygon points="295,238 405,175 405,235 295,298" fill="#1e40af"/>
+
+  <!-- Screen face (white/light area inside monitor) -->
+  <polygon points="200,185 295,130 390,185 295,240" fill="url(#monitorFace)"/>
+
+  <!-- Screen inner content area -->
+  <!-- Top bar of "OS" -->
+  <polygon points="208,185 295,134 382,185 295,236" fill="#f8fafc"/>
+  <polygon points="208,185 295,134 382,185 295,140" fill="#2563eb" opacity="0.9"/>
+
+  <!-- Dots in title bar -->
+  <circle cx="222" cy="158" r="3" fill="#ef4444" opacity="0.8"/>
+  <circle cx="232" cy="155" r="3" fill="#f59e0b" opacity="0.8"/>
+  <circle cx="242" cy="152" r="3" fill="#22c55e" opacity="0.8"/>
+
+  <!-- Content lines on screen -->
+  <!-- Search bar mockup -->
+  <polygon points="225,168 365,168 365,172 225,172" fill="#e2e8f0" opacity="0.6"/>
+  <ellipse cx="232" cy="170" rx="4" ry="1.5" fill="#94a3b8" opacity="0.5"/>
+
+  <!-- Job card rows on screen -->
+  <polygon points="220,178 290,162 370,178 300,194" fill="#eff6ff" opacity="0.8"/>
+  <polygon points="222,180 280,165 348,180 290,195" fill="#bfdbfe" opacity="0.5"/>
+  <polygon points="220,192 310,174 370,192 280,210" fill="#e0e7ff" opacity="0.6"/>
+
+  <!-- Progress bar -->
+  <polygon points="230,205 340,188 340,191 230,208" fill="#e2e8f0" opacity="0.5"/>
+  <polygon points="230,205 295,191 295,194 230,208" fill="url(#accentGrad)" opacity="0.8"/>
+
+  <!-- ══ MONITOR STAND ══ -->
+  <polygon points="283,295 295,289 307,295 295,301" fill="#1d4ed8"/>
+  <polygon points="283,295 295,301 295,318 283,312" fill="#1e3a8a"/>
+  <polygon points="295,301 307,295 307,312 295,318" fill="#1e40af"/>
+  <!-- Base -->
+  <polygon points="265,312 295,298 325,312 295,326" fill="#e2e8f0"/>
+  <polygon points="265,312 295,326 295,330 265,316" fill="#b0bec5"/>
+  <polygon points="295,326 325,312 325,316 295,330" fill="#90a4ae"/>
+
+  <!-- ══ PERSON (right side) ══ -->
+  <!-- Shadow under person -->
+  <ellipse cx="430" cy="370" rx="45" ry="12" fill="rgba(0,0,0,0.10)"/>
+
+  <!-- Legs -->
+  <rect x="415" y="335" width="12" height="38" rx="5" fill="#1e293b" transform="rotate(-3,421,354)"/>
+  <rect x="430" y="333" width="12" height="40" rx="5" fill="#334155" transform="rotate(4,436,353)"/>
+  <!-- Shoes -->
+  <ellipse cx="419" cy="374" rx="10" ry="5" fill="#0f172a" transform="rotate(-3,419,374)"/>
+  <ellipse cx="438" cy="374" rx="10" ry="5" fill="#1e293b" transform="rotate(4,438,374)"/>
+
+  <!-- Body -->
+  <rect x="410" y="290" width="42" height="52" rx="10" fill="url(#personBody)"/>
+  <!-- Shirt detail -->
+  <rect x="418" y="295" width="26" height="6" rx="3" fill="rgba(255,255,255,0.25)"/>
+
+  <!-- Left arm (pointing to screen) -->
+  <path d="M410,305 Q375,295 355,275" stroke="#7c3aed" stroke-width="11" fill="none" stroke-linecap="round"/>
+  <circle cx="353" cy="273" r="6" fill="#7c3aed"/>
+
+  <!-- Right arm -->
+  <path d="M452,305 Q468,320 465,340" stroke="#2563eb" stroke-width="11" fill="none" stroke-linecap="round"/>
+  <circle cx="465" cy="342" r="6" fill="#2563eb"/>
+
+  <!-- Neck -->
+  <rect x="425" y="278" width="14" height="15" rx="6" fill="#fbbf24" opacity="0.85"/>
+
+  <!-- Head -->
+  <circle cx="432" cy="268" r="22" fill="#fbbf24"/>
+  <!-- Hair -->
+  <path d="M412,258 Q415,240 432,238 Q449,236 452,252 Q445,242 432,243 Q419,244 412,258Z" fill="#1e293b"/>
+  <!-- Eyes -->
+  <circle cx="425" cy="265" r="3" fill="#1e293b"/>
+  <circle cx="439" cy="263" r="3" fill="#1e293b"/>
+  <!-- Eye shine -->
+  <circle cx="426" cy="264" r="1" fill="white"/>
+  <circle cx="440" cy="262" r="1" fill="white"/>
+  <!-- Smile -->
+  <path d="M423,273 Q432,280 441,274" stroke="#b45309" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+  <!-- ══ FLOATING CARDS ══ -->
+  <!-- Card 1 — top left (match score) -->
+  <g transform="translate(80,155)" filter="url(#softShadow)">
+    <rect width="110" height="46" rx="10" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+    <!-- Green dot -->
+    <circle cx="16" cy="14" r="5" fill="#22c55e"/>
+    <rect x="26" y="10" width="56" height="7" rx="3" fill="#0f172a"/>
+    <rect x="26" y="22" width="40" height="5" rx="2" fill="#94a3b8"/>
+    <!-- Score badge -->
+    <rect x="78" y="8" width="24" height="14" rx="6" fill="url(#greenGrad)"/>
+    <text x="90" y="19" text-anchor="middle" font-size="7" font-weight="800" fill="white" font-family="system-ui">96%</text>
+    <rect x="12" y="34" width="86" height="4" rx="2" fill="#eff6ff"/>
+    <rect x="12" y="34" width="60" height="4" rx="2" fill="url(#accentGrad)"/>
+  </g>
+
+  <!-- Card 2 — bottom right (hired!) -->
+  <g transform="translate(455,285)" filter="url(#softShadow)">
+    <rect width="105" height="44" rx="10" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="8" y="8" width="28" height="28" rx="8" fill="url(#greenGrad)"/>
+    <!-- checkmark -->
+    <polyline points="13,22 19,28 29,16" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="42" y="10" width="55" height="7" rx="3" fill="#0f172a"/>
+    <rect x="42" y="22" width="42" height="5" rx="2" fill="#94a3b8"/>
+    <rect x="42" y="32" width="30" height="5" rx="2" fill="#dcfce7"/>
+  </g>
+
+  <!-- Card 3 — floating above person (notification) -->
+  <g transform="translate(388,170)" filter="url(#softShadow)">
+    <rect width="112" height="40" rx="9" fill="white" stroke="#ddd6fe" stroke-width="1.5"/>
+    <circle cx="18" cy="20" r="7" fill="url(#accentGrad)"/>
+    <text x="18" y="24" text-anchor="middle" font-size="9" fill="white" font-family="system-ui">✦</text>
+    <rect x="32" y="10" width="58" height="6" rx="3" fill="#0f172a"/>
+    <rect x="32" y="20" width="44" height="5" rx="2" fill="#94a3b8"/>
+    <rect x="32" y="29" width="32" height="5" rx="2" fill="#ede9fe"/>
+  </g>
+
+  <!-- ══ SMALL DECORATIVE DOTS ══ -->
+  <circle cx="145" cy="230" r="4" fill="#bfdbfe" opacity="0.8"/>
+  <circle cx="158" cy="245" r="3" fill="#c4b5fd" opacity="0.6"/>
+  <circle cx="132" cy="255" r="2.5" fill="#fbcfe8" opacity="0.7"/>
+  <circle cx="490" cy="225" r="4" fill="#bbf7d0" opacity="0.8"/>
+  <circle cx="475" cy="245" r="3" fill="#bfdbfe" opacity="0.6"/>
+  <circle cx="500" cy="248" r="2" fill="#c4b5fd" opacity="0.7"/>
+
+  <!-- Sparkle 1 -->
+  <g transform="translate(165,130)">
+    <line x1="0" y1="-7" x2="0" y2="7" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+    <line x1="-7" y1="0" x2="7" y2="0" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+    <line x1="-5" y1="-5" x2="5" y2="5" stroke="#2563eb" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+    <line x1="5" y1="-5" x2="-5" y2="5" stroke="#2563eb" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+  </g>
+  <!-- Sparkle 2 -->
+  <g transform="translate(480,185)">
+    <line x1="0" y1="-6" x2="0" y2="6" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+    <line x1="-6" y1="0" x2="6" y2="0" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+    <line x1="-4" y1="-4" x2="4" y2="4" stroke="#7c3aed" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+    <line x1="4" y1="-4" x2="-4" y2="4" stroke="#7c3aed" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+  </g>
+</svg>

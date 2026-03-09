@@ -1,167 +1,126 @@
-import React, { useEffect, useState } from "react";
-import {
-  FaBullseye,
-  FaCheckCircle,
-  FaExclamationTriangle,
-  FaChartLine,
-} from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaBullseye, FaCheckCircle, FaExclamationTriangle, FaChartLine, FaLightbulb } from "react-icons/fa";
 
 const ATSResults = ({ score }) => {
-  const [animatedScore, setAnimatedScore] = useState(0);
+  const [animated, setAnimated] = useState(0);
 
   useEffect(() => {
-    let start = 0;
-    const interval = setInterval(() => {
-      start += 1;
-      if (start >= score) {
-        clearInterval(interval);
-        start = score;
-      }
-      setAnimatedScore(start);
-    }, 15);
+    let s = 0;
+    const t = setInterval(() => {
+      s += 2;
+      if (s >= score) { clearInterval(t); s = score; }
+      setAnimated(s);
+    }, 18);
+    return () => clearInterval(t);
   }, [score]);
 
-  const getScoreStatus = (score) => {
-    if (score >= 90)
-      return { text: "Excellent", icon: FaCheckCircle, color: "text-green-400" };
-    if (score >= 80)
-      return { text: "Strong", icon: FaCheckCircle, color: "text-blue-400" };
-    if (score >= 70)
-      return {
-        text: "Average",
-        icon: FaExclamationTriangle,
-        color: "text-yellow-400",
-      };
-    return {
-      text: "Needs Improvement",
-      icon: FaExclamationTriangle,
-      color: "text-red-400",
-    };
-  };
+  const status =
+    score >= 90 ? { text:"Excellent",         color:"#22c55e", icon:FaCheckCircle }
+  : score >= 80 ? { text:"Strong",            color:"#3b82f6", icon:FaCheckCircle }
+  : score >= 70 ? { text:"Average",           color:"#f59e0b", icon:FaExclamationTriangle }
+  :               { text:"Needs Improvement", color:"#ef4444", icon:FaExclamationTriangle };
 
-  const status = getScoreStatus(score);
   const StatusIcon = status.icon;
+  const C = 2 * Math.PI * 52;
+  const offset = C - (animated / 100) * C;
 
   const keywords = [
-    { word: "JavaScript", matched: true },
-    { word: "React", matched: true },
-    { word: "Node.js", matched: true },
-    { word: "TypeScript", matched: false },
-    { word: "Python", matched: true },
-    { word: "AWS", matched: false },
-    { word: "Docker", matched: true },
-    { word: "MongoDB", matched: true },
+    { word:"React",       matched:true  },
+    { word:"JavaScript",  matched:true  },
+    { word:"Node.js",     matched:true  },
+    { word:"TypeScript",  matched:false },
+    { word:"Python",      matched:true  },
+    { word:"AWS",         matched:false },
+    { word:"Docker",      matched:true  },
+    { word:"MongoDB",     matched:true  },
   ];
 
-  const circumference = 2 * Math.PI * 40;
-  const strokeDashoffset =
-    circumference - (animatedScore / 100) * circumference;
-
   return (
-    <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-xl">
-      
+    <div className="ats-card">
       {/* Header */}
-      <div className="flex items-center space-x-3 mb-10">
-        <div className="p-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-600 shadow-lg">
-          <FaBullseye className="text-white text-xl" />
+      <div className="ats-header">
+        <div className="ats-header-icon"><FaBullseye /></div>
+        <div>
+          <h2 className="ats-title">ATS Analysis Report</h2>
+          <p className="ats-sub">How recruiters' systems see your resume</p>
         </div>
-        <h2 className="text-2xl font-bold text-white tracking-wide">
-          ATS Analysis Report
-        </h2>
       </div>
 
-      {/* Score Section */}
-      <div className="text-center mb-10">
-        <div className="relative inline-flex items-center justify-center w-40 h-40">
-          <svg className="w-40 h-40 -rotate-90">
-            <circle
-              cx="80"
-              cy="80"
-              r="40"
-              stroke="rgba(255,255,255,0.1)"
-              strokeWidth="10"
-              fill="none"
-            />
-            <circle
-              cx="80"
-              cy="80"
-              r="40"
-              stroke="#8B5CF6"
-              strokeWidth="10"
-              fill="none"
-              strokeDasharray={circumference}
-              strokeDashoffset={strokeDashoffset}
+      {/* Score ring + labels */}
+      <div className="ats-score-section">
+        <div style={{ position:"relative", width:"140px", height:"140px" }}>
+          <svg width="140" height="140" style={{ transform:"rotate(-90deg)" }}>
+            <circle cx="70" cy="70" r="52" fill="none" stroke="#f1f5f9" strokeWidth="10" />
+            <circle cx="70" cy="70" r="52" fill="none"
+              stroke={status.color} strokeWidth="10"
+              strokeDasharray={C} strokeDashoffset={offset}
               strokeLinecap="round"
-              className="transition-all duration-500 ease-out"
+              style={{ transition:"stroke-dashoffset .3s ease" }}
             />
           </svg>
-
-          <div className="absolute text-center">
-            <div className="text-4xl font-bold text-white">
-              {animatedScore}%
-            </div>
-            <div
-              className={`flex items-center justify-center space-x-1 text-sm ${status.color}`}
-            >
-              <StatusIcon />
-              <span>{status.text}</span>
+          <div style={{ position:"absolute", inset:0, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
+            <div style={{ fontSize:"32px", fontWeight:"800", color:"var(--text-primary)", letterSpacing:"-.03em" }}>{animated}%</div>
+            <div style={{ display:"flex", alignItems:"center", gap:"4px", fontSize:"12px", fontWeight:600, color:status.color }}>
+              <StatusIcon /><span>{status.text}</span>
             </div>
           </div>
         </div>
 
-        {score >= 80 && (
-          <div className="mt-6 inline-flex items-center space-x-2 px-5 py-2 rounded-full bg-green-500/20 border border-green-500/30">
-            <FaCheckCircle className="text-green-400" />
-            <span className="text-green-300 font-medium">
-              Resume is ATS Optimized
-            </span>
+        <div className="ats-score-meta">
+          <div className="ats-meta-row">
+            <span className="ats-meta-label">Resume Match</span>
+            <span className="ats-meta-val" style={{ color:status.color }}>{score}%</span>
           </div>
-        )}
+          <div className="ats-meta-row">
+            <span className="ats-meta-label">Keywords Found</span>
+            <span className="ats-meta-val">{keywords.filter(k=>k.matched).length}/{keywords.length}</span>
+          </div>
+          <div className="ats-meta-row">
+            <span className="ats-meta-label">Format Score</span>
+            <span className="ats-meta-val" style={{ color:"#22c55e" }}>Good</span>
+          </div>
+
+          {score >= 80 && (
+            <div className="ats-optimized-badge">
+              <FaCheckCircle style={{ color:"#22c55e" }} />
+              ATS Optimized ✓
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Keyword Section */}
-      <div className="space-y-6">
-        <div className="flex items-center space-x-2">
-          <FaChartLine className="text-blue-400" />
-          <h3 className="text-lg font-semibold text-white">
-            Keyword Matching
-          </h3>
+      {/* Keywords */}
+      <div className="ats-section">
+        <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"14px" }}>
+          <FaChartLine style={{ color:"var(--blue-primary)" }} />
+          <h3 className="ats-section-title">Keyword Matching</h3>
         </div>
-
-        <div className="grid md:grid-cols-2 gap-4">
-          {keywords.map((keyword, index) => (
-            <div
-              key={index}
-              className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 hover:scale-105 ${
-                keyword.matched
-                  ? "bg-green-500/10 border border-green-500/20"
-                  : "bg-red-500/10 border border-red-500/20"
-              }`}
-            >
-              <span className="text-white">{keyword.word}</span>
-              {keyword.matched ? (
-                <FaCheckCircle className="text-green-400" />
-              ) : (
-                <FaExclamationTriangle className="text-red-400" />
-              )}
+        <div className="ats-keywords-grid">
+          {keywords.map((kw, i) => (
+            <div key={i} className={`ats-keyword ${kw.matched ? "matched" : "missing"}`}>
+              <span>{kw.word}</span>
+              {kw.matched
+                ? <FaCheckCircle style={{ color:"#22c55e", fontSize:"12px" }} />
+                : <FaExclamationTriangle style={{ color:"#ef4444", fontSize:"12px" }} />
+              }
             </div>
           ))}
         </div>
+      </div>
 
-        {/* Recommendations */}
-        <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-5">
-          <h4 className="text-blue-300 font-semibold mb-2">
-            Smart Recommendations
-          </h4>
-          <ul className="text-gray-300 text-sm space-y-2">
-            {score < 80 && (
-              <li>• Add missing technical keywords like TypeScript & AWS.</li>
-            )}
-            <li>• Tailor resume keywords to job description.</li>
-            <li>• Quantify achievements with measurable results.</li>
-            <li>• Keep formatting ATS friendly.</li>
-          </ul>
+      {/* Recommendations */}
+      <div className="ats-recommendations">
+        <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"12px" }}>
+          <FaLightbulb style={{ color:"#f59e0b" }} />
+          <h3 className="ats-section-title">Smart Recommendations</h3>
         </div>
+        <ul className="ats-rec-list">
+          {score < 80 && <li>Add missing keywords like TypeScript & AWS to your resume</li>}
+          <li>Tailor resume keywords to each specific job description</li>
+          <li>Quantify all achievements with measurable numbers and impact</li>
+          <li>Keep formatting clean — avoid tables, graphics, or columns</li>
+          <li>Include a strong skills section at the top of your resume</li>
+        </ul>
       </div>
     </div>
   );

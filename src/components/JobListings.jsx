@@ -1,208 +1,167 @@
-import React, { useState } from "react";
-import {
-  FaSearch,
-  FaFilter,
-  FaMapMarkerAlt,
-  FaClock,
-  FaDollarSign,
-} from "react-icons/fa";
+import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { FaSearch, FaMapMarkerAlt, FaBookmark, FaRegBookmark, FaSlidersH, FaTimes, FaClock, FaMoneyBillWave } from "react-icons/fa";
+import { JOBS } from "./Jobs";
+
+const TYPES = ["All", "Full-time", "Part-time", "Contract"];
+const EXPERIENCES = ["All", "Junior (1-3 yrs)", "Mid (3-5 yrs)", "Senior (5+ yrs)"];
+const SALARIES = [
+  { label: "Any", min: 0, max: 999 },
+  { label: "$0–$80k", min: 0, max: 80 },
+  { label: "$80–$120k", min: 80, max: 120 },
+  { label: "$120k+", min: 120, max: 999 },
+];
 
 const JobListings = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
+  const navigate = useNavigate();
 
-  const jobs = [
-    {
-      id: 1,
-      title: "Senior Frontend Developer",
-      company: "TechCorp Inc.",
-      location: "San Francisco, CA",
-      type: "Full Time",
-      salary: "$120k - $150k",
-      posted: "2 hours ago",
-      featured: true,
-      description:
-        "We are looking for a Senior Frontend Developer to join our innovative team...",
-      skills: ["React", "TypeScript", "Node.js", "GraphQL"],
-    },
-    {
-      id: 2,
-      title: "Full Stack Engineer",
-      company: "StartupXYZ",
-      location: "Remote",
-      type: "Full Time",
-      salary: "$100k - $130k",
-      posted: "5 hours ago",
-      featured: false,
-      description:
-        "Join our fast-growing startup as a Full Stack Engineer...",
-      skills: ["JavaScript", "Python", "AWS", "Docker"],
-    },
-    {
-      id: 3,
-      title: "React Developer",
-      company: "Digital Solutions",
-      location: "New York, NY",
-      type: "Contract",
-      salary: "$90k - $120k",
-      posted: "1 day ago",
-      featured: true,
-      description:
-        "We need a skilled React Developer to build amazing user interfaces...",
-      skills: ["React", "Redux", "CSS", "JavaScript"],
-    },
-    {
-      id: 4,
-      title: "Backend Engineer",
-      company: "CloudTech",
-      location: "Austin, TX",
-      type: "Full Time",
-      salary: "$110k - $140k",
-      posted: "2 days ago",
-      featured: false,
-      description:
-        "Looking for a Backend Engineer to work on scalable cloud infrastructure...",
-      skills: ["Python", "AWS", "PostgreSQL", "Redis"],
-    },
-  ];
+  const [query, setQuery] = useState("");
+  const [location, setLocation] = useState("");
+  const [type, setType] = useState("All");
+  const [experience, setExperience] = useState("All");
+  const [salaryIdx, setSalaryIdx] = useState(0);
+  const [remoteOnly, setRemoteOnly] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
-  const filteredJobs = jobs.filter(
-    (job) =>
-      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.skills.some((skill) =>
-        skill.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-  );
+  const [saved, setSaved] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("savedJobs") || "[]");
+    } catch {
+      return [];
+    }
+  });
+
+  const toggleSave = (id, e) => {
+    e.stopPropagation();
+    setSaved(prev => {
+      const next = prev.includes(id)
+        ? prev.filter(x => x !== id)
+        : [...prev, id];
+      localStorage.setItem("savedJobs", JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const salary = SALARIES[salaryIdx];
+
+  const filtered = useMemo(() => {
+    return JOBS.filter(j => {
+      const q = query.toLowerCase();
+
+      const matchQ =
+        !q ||
+        j.title.toLowerCase().includes(q) ||
+        j.company.toLowerCase().includes(q) ||
+        j.skills.some(s => s.toLowerCase().includes(q));
+
+      const matchL =
+        !location ||
+        j.location.toLowerCase().includes(location.toLowerCase());
+
+      const matchT = type === "All" || j.type === type;
+      const matchE = experience === "All" || j.experience === experience;
+      const matchS = j.salaryMin <= salary.max && j.salaryMax >= salary.min;
+      const matchR = !remoteOnly || j.remote;
+
+      return matchQ && matchL && matchT && matchE && matchS && matchR;
+    });
+  }, [query, location, type, experience, salary, remoteOnly]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="jobs-page">
 
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">
-          Find Your Next Job
+      <div className="jobs-page-header">
+        <h1 className="jobs-page-title">
+          Find Your <span className="accent">Dream Job</span>
         </h1>
-        <p className="text-gray-300">
-          Discover opportunities that match your skills and aspirations
+        <p className="jobs-page-sub">
+          {filtered.length} opportunities waiting for you
         </p>
       </div>
 
-      {/* Search Section */}
-      <div className="backdrop-blur-lg bg-white/5 rounded-xl p-6 border border-white/10 mb-8">
-        <div className="grid md:grid-cols-4 gap-4">
-
-          {/* Search Input */}
-          <div className="md:col-span-2">
-            <div className="relative">
-              <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search jobs, companies, skills..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:bg-white/15 transition-all duration-300"
-              />
-            </div>
-          </div>
-
-          {/* Location Filter */}
-          <div>
-            <div className="relative">
-              <FaMapMarkerAlt className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <select
-                value={selectedLocation}
-                onChange={(e) => setSelectedLocation(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-400 focus:bg-white/15 transition-all duration-300 appearance-none"
-              >
-                <option value="">All Locations</option>
-                <option value="remote">Remote</option>
-                <option value="san-francisco">San Francisco, CA</option>
-                <option value="new-york">New York, NY</option>
-                <option value="austin">Austin, TX</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Filter Button */}
-          <div>
-            <button className="w-full flex items-center justify-center space-x-2 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-400 hover:to-purple-500 transition-all duration-300">
-              <FaFilter />
-              <span>More Filters</span>
-            </button>
-          </div>
-
+      {filtered.length === 0 ? (
+        <div className="empty-state">
+          <h3>No jobs found</h3>
         </div>
-      </div>
+      ) : (
+        <div className="jobs-list">
+          {filtered.map(job => (
+            <div
+              key={job.id}
+              className="job-card"
+              onClick={() => navigate(`/jobs/${job.id}`)}
+            >
 
-      {/* Results */}
-      <div className="space-y-6">
-        <p className="text-gray-300">
-          Showing {filteredJobs.length} jobs
-        </p>
+              <div className="job-card-top">
+                <div
+                  className="job-company-logo"
+                  style={{
+                    background: `linear-gradient(135deg,${job.color},${job.color}99)`
+                  }}
+                >
+                  {job.initials}
+                </div>
 
-        <div className="space-y-4">
-          {filteredJobs.map((job) => (
-            <JobCard key={job.id} job={job} />
+                <div style={{ flex: 1 }}>
+                  <div className="job-title">{job.title}</div>
+                  <div className="company-name">{job.company}</div>
+
+                  <div className="job-meta-row">
+                    <span>
+                      <FaMapMarkerAlt /> {job.location}
+                    </span>
+
+                    <span>
+                      <FaClock /> {job.posted}
+                    </span>
+
+                    <span className="job-type-badge">
+                      {job.type}
+                    </span>
+
+                    {job.remote && (
+                      <span className="job-remote-badge">
+                        🌍 Remote
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="job-salary">
+                    {job.salary}
+                  </div>
+                </div>
+              </div>
+
+              <p className="job-description">
+                {job.description.slice(0, 120)}...
+              </p>
+
+              <div className="job-footer">
+                <div>
+                  {job.skills.map((s, i) => (
+                    <span key={i} className="skill-tag">
+                      {s}
+                    </span>
+                  ))}
+                </div>
+
+                <button
+                  className="apply-btn"
+                  onClick={e => {
+                    e.stopPropagation();
+                    navigate(`/jobs/${job.id}`);
+                  }}
+                >
+                  View Details →
+                </button>
+              </div>
+
+            </div>
           ))}
         </div>
-      </div>
-    </div>
-  );
-};
-
-const JobCard = ({ job }) => {
-  return (
-    <div
-      className={`group backdrop-blur-lg bg-white/5 rounded-xl p-6 border transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-2xl ${
-        job.featured
-          ? "border-purple-500/30 hover:border-purple-400/50"
-          : "border-white/10 hover:border-white/20"
-      }`}
-    >
-      <div className="flex items-start justify-between mb-4">
-        <div>
-          <h3 className="text-xl font-semibold text-white group-hover:text-blue-400 transition-colors duration-200">
-            {job.title}
-          </h3>
-          <p className="text-gray-300 font-medium">{job.company}</p>
-        </div>
-
-        <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-400 hover:to-purple-500 transition-all duration-300">
-          Apply Now
-        </button>
-      </div>
-
-      <div className="grid md:grid-cols-4 gap-4 mb-4 text-sm">
-        <div className="flex items-center space-x-2 text-gray-300">
-          <FaMapMarkerAlt />
-          <span>{job.location}</span>
-        </div>
-        <div className="flex items-center space-x-2 text-gray-300">
-          <FaClock />
-          <span>{job.type}</span>
-        </div>
-        <div className="flex items-center space-x-2 text-gray-300">
-          <FaDollarSign />
-          <span>{job.salary}</span>
-        </div>
-        <div className="text-gray-400 text-right">
-          {job.posted}
-        </div>
-      </div>
-
-      <p className="text-gray-300 mb-4">{job.description}</p>
-
-      <div className="flex flex-wrap gap-2">
-        {job.skills.map((skill, index) => (
-          <span
-            key={index}
-            className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm border border-blue-500/30"
-          >
-            {skill}
-          </span>
-        ))}
-      </div>
+      )}
     </div>
   );
 };

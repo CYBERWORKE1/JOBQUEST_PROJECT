@@ -1,0 +1,200 @@
+export const JOBS = [
+  {
+    id: 1,
+    title: "Senior Frontend Developer",
+    company: "TechCorp Inc.",
+    initials: "TC",
+    color: "#3b82f6",
+    location: "San Francisco, CA",
+    type: "Full-time",
+    salary: "$120k – $160k",
+    salaryMin: 120, salaryMax: 160,
+    remote: true,
+    experience: "Senior (5+ yrs)",
+    posted: "2 days ago", postedDays: 2,
+    featured: true,
+    skills: ["React", "TypeScript", "Node.js", "GraphQL"],
+    description: "We are looking for a highly skilled Senior Frontend Developer to join our growing engineering team. You will be responsible for building and maintaining complex user interfaces, collaborating with designers and backend engineers to deliver world-class products used by millions.",
+    responsibilities: [
+      "Lead the development of scalable, performant frontend applications",
+      "Mentor junior developers and conduct thorough code reviews",
+      "Collaborate with UX/UI designers to implement pixel-perfect interfaces",
+      "Optimize applications for maximum speed and scalability",
+      "Participate in architecture decisions and technical planning"
+    ],
+    requirements: [
+      "5+ years of hands-on experience with React.js",
+      "Strong proficiency in TypeScript and modern ES6+",
+      "Experience with GraphQL and RESTful APIs",
+      "Knowledge of CI/CD pipelines and DevOps practices",
+      "Excellent communication and teamwork skills"
+    ],
+    benefits: ["Health Insurance", "Remote Work", "Stock Options", "401k", "Unlimited PTO"],
+    about: "TechCorp Inc. is a leading technology company building next-generation software solutions for Fortune 500 companies worldwide. We believe in a culture of innovation, collaboration, and continuous learning."
+  },
+  {
+    id: 2,
+    title: "Full Stack Engineer",
+    company: "DataFlow Labs",
+    initials: "DL",
+    color: "#7c3aed",
+    location: "New York, NY",
+    type: "Full-time",
+    salary: "$100k – $140k",
+    salaryMin: 100, salaryMax: 140,
+    remote: true,
+    experience: "Mid (3-5 yrs)",
+    posted: "1 day ago", postedDays: 1,
+    featured: false,
+    skills: ["JavaScript", "Python", "PostgreSQL", "Docker"],
+    description: "DataFlow Labs is hiring a Full Stack Engineer to help build our data analytics platform used by thousands of businesses globally. You will work across the entire stack, from database design to polished user interfaces.",
+    responsibilities: [
+      "Build and maintain both frontend and backend systems",
+      "Design and optimize database schemas for performance",
+      "Integrate third-party APIs and services",
+      "Write clean, testable, and well-documented code",
+      "Participate in agile ceremonies and sprint planning"
+    ],
+    requirements: [
+      "3+ years of full-stack development experience",
+      "Proficiency in Python and JavaScript/TypeScript",
+      "Experience with PostgreSQL and database design",
+      "Familiarity with Docker and containerization",
+      "Strong problem-solving skills"
+    ],
+    benefits: ["Health & Dental", "Remote Friendly", "Learning Budget", "401k"],
+    about: "DataFlow Labs builds intelligent data analytics tools that help businesses make smarter, faster decisions. Our platform processes over 1 billion events per day."
+  },
+  {
+    id: 3,
+    title: "UI/UX Designer",
+    company: "CreativeStudio",
+    initials: "CS",
+    color: "#ec4899",
+    location: "Austin, TX",
+    type: "Full-time",
+    salary: "$80k – $110k",
+    salaryMin: 80, salaryMax: 110,
+    remote: false,
+    experience: "Mid (3-5 yrs)",
+    posted: "3 days ago", postedDays: 3,
+    featured: false,
+    skills: ["Figma", "Adobe XD", "Prototyping", "User Research"],
+    description: "Join CreativeStudio as a UI/UX Designer and shape the visual experience of products used by millions worldwide. You will lead design initiatives from concept to launch.",
+    responsibilities: [
+      "Create wireframes, prototypes, and high-fidelity designs",
+      "Conduct user research and usability testing",
+      "Develop and maintain design systems",
+      "Collaborate closely with product and engineering teams",
+      "Iterate on designs based on data and feedback"
+    ],
+    requirements: [
+      "3+ years of product design experience",
+      "Expert in Figma and Adobe Creative Suite",
+      "Strong portfolio demonstrating UI/UX craft",
+      "Experience building and maintaining design systems",
+      "Excellent visual design sensibility"
+    ],
+    benefits: ["Health Insurance", "Gym Membership", "Creative Budget", "Flexible Hours"],
+    about: "CreativeStudio is an award-winning design agency crafting beautiful digital experiences for top global brands."
+  },
+  {
+    id: 4,
+    title: "DevOps Engineer",
+    company: "CloudNine",
+    initials: "CN",
+    color: "#22c55e",
+    location: "Seattle, WA",
+    type: "Contract",
+    salary: "$130k – $170k",
+    salaryMin: 130, salaryMax: 170,
+    remote: true,
+    experience: "Senior (5+ yrs)",
+    posted: "5 days ago", postedDays: 5,
+    featured: true,
+    skills: ["AWS", "Kubernetes", "Terraform", "CI/CD"],
+    description: "CloudNine is seeking an experienced DevOps Engineer to manage and scale our cloud infrastructure serving enterprise clients globally.",
+    responsibilities: [
+      "Design and implement robust CI/CD pipelines",
+      "Manage and optimize AWS infrastructure with Terraform",
+      "Monitor system performance and ensure high availability",
+      "Implement security best practices and compliance",
+      "Collaborate with development teams on deployment strategies"
+    ],
+    requirements: [
+      "5+ years DevOps/SRE experience",
+      "Expert in AWS services (ECS, EKS, Lambda, RDS)",
+      "Strong knowledge of Kubernetes",
+      "Experience with Terraform and IaC",
+      "Security and compliance knowledge"
+    ],
+    benefits: ["Remote Work", "Competitive Rate", "Equipment Budget", "Health Insurance"],
+    about: "CloudNine provides enterprise-grade cloud infrastructure solutions to companies around the globe, managing over $500M in cloud spend annually."
+  },
+  {
+    id: 5,
+    title: "React Native Developer",
+    company: "MobileFirst",
+    initials: "MF",
+    color: "#f59e0b",
+    location: "Remote",
+    type: "Part-time",
+    salary: "$60k – $90k",
+    salaryMin: 60, salaryMax: 90,
+    remote: true,
+    experience: "Junior (1-3 yrs)",
+    posted: "1 week ago", postedDays: 7,
+    featured: false,
+    skills: ["React Native", "JavaScript", "iOS", "Android"],
+    description: "MobileFirst is looking for a React Native developer to build and maintain cross-platform mobile applications with millions of downloads.",
+    responsibilities: [
+      "Develop and maintain React Native mobile apps for iOS and Android",
+      "Work with REST APIs and manage local storage",
+      "Ensure app performance, quality, and responsiveness",
+      "Collaborate with design and backend teams",
+      "Write unit and integration tests"
+    ],
+    requirements: [
+      "1-3 years React Native experience",
+      "Published apps on App Store or Google Play (preferred)",
+      "JavaScript/TypeScript proficiency",
+      "Understanding of mobile UX patterns",
+      "Strong attention to detail"
+    ],
+    benefits: ["Flexible Hours", "Remote Work", "Learning Budget"],
+    about: "MobileFirst is a product studio building mobile apps that reach millions of users worldwide."
+  },
+  {
+    id: 6,
+    title: "Backend Engineer",
+    company: "FinTech Solutions",
+    initials: "FS",
+    color: "#06b6d4",
+    location: "Chicago, IL",
+    type: "Full-time",
+    salary: "$110k – $150k",
+    salaryMin: 110, salaryMax: 150,
+    remote: false,
+    experience: "Senior (5+ yrs)",
+    posted: "4 days ago", postedDays: 4,
+    featured: false,
+    skills: ["Node.js", "PostgreSQL", "Redis", "Microservices"],
+    description: "FinTech Solutions is building the future of digital payments and needs a skilled Backend Engineer to architect and maintain high-throughput financial systems.",
+    responsibilities: [
+      "Design and build highly scalable microservices",
+      "Optimize database performance and complex queries",
+      "Implement security measures for sensitive financial data",
+      "Build and maintain RESTful APIs",
+      "Work closely with cross-functional teams"
+    ],
+    requirements: [
+      "5+ years backend development experience",
+      "Expert in Node.js and PostgreSQL",
+      "Experience with microservices architecture",
+      "Knowledge of financial systems preferred",
+      "Strong security-first mindset"
+    ],
+    benefits: ["Health Insurance", "Annual Bonus", "401k", "Stock Options"],
+    about: "FinTech Solutions is a fintech company processing billions of dollars in transactions annually for customers across 40+ countries."
+  }
+];

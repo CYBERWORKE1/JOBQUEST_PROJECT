@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  FaUser,
-  FaStar,
-  FaDownload,
-  FaEye,
-  FaCommentDots,
-} from "react-icons/fa";
+import { FaUser, FaStar, FaDownload, FaEye, FaCommentDots } from "react-icons/fa";
 
 const CandidateMatches = () => {
   const candidates = [
@@ -41,124 +35,98 @@ const CandidateMatches = () => {
     },
   ];
 
-  const getScoreColor = (score) => {
-    if (score >= 90) return "from-green-500 to-emerald-500";
-    if (score >= 80) return "from-blue-500 to-cyan-500";
-    return "from-yellow-500 to-orange-500";
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Available":
-        return "bg-green-500/20 text-green-300 border-green-500/30";
-      case "Interviewing":
-        return "bg-yellow-500/20 text-yellow-300 border-yellow-500/30";
-      default:
-        return "bg-gray-500/20 text-gray-300 border-gray-500/30";
-    }
+  const getScoreGradient = (score) => {
+    if (score >= 90) return "linear-gradient(135deg,#22c55e,#16a34a)";
+    if (score >= 80) return "linear-gradient(135deg,#3b82f6,#06b6d4)";
+    return "linear-gradient(135deg,#f59e0b,#f97316)";
   };
 
   return (
-    <div className="backdrop-blur-lg bg-white/5 rounded-xl p-6 border border-white/10">
-      
+    <div className="candidates-panel">
+
       {/* Header */}
-      <div className="flex items-center space-x-3 mb-6">
-        <div className="p-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600">
-          <FaUser className="h-5 w-5 text-white" />
+      <div style={{ display:"flex", alignItems:"center", gap:"12px", marginBottom:"20px" }}>
+        <div style={{
+          width:"40px", height:"40px", borderRadius:"10px",
+          background:"linear-gradient(135deg,#3b82f6,#7c3aed)",
+          display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0
+        }}>
+          <FaUser style={{ color:"#fff", fontSize:"16px" }} />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-white">Top Candidates</h2>
-          <p className="text-gray-300 text-sm">ATS Score ≥ 80%</p>
+          <div className="candidates-panel-title">Top Candidates</div>
+          <div className="candidates-panel-sub">ATS Score ≥ 80%</div>
         </div>
       </div>
 
-      {/* Candidate Cards */}
-      <div className="space-y-4">
-        {candidates.map((candidate) => (
-          <div
-            key={candidate.id}
-            className="group backdrop-blur-lg bg-white/5 rounded-lg p-4 border border-white/10 hover:border-white/20 transition-all duration-300"
-          >
-            {/* Header */}
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
-                  <FaUser className="text-white text-lg" />
+      {/* Cards */}
+      <div style={{ display:"flex", flexDirection:"column", gap:"12px" }}>
+        {candidates.map((c) => (
+          <div key={c.id} className="candidate-card">
+
+            {/* Top row */}
+            <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:"10px" }}>
+              <div style={{ display:"flex", alignItems:"center", gap:"10px" }}>
+                {/* Avatar */}
+                <div style={{
+                  width:"40px", height:"40px", borderRadius:"50%",
+                  background:"linear-gradient(135deg,#3b82f6,#7c3aed)",
+                  display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0
+                }}>
+                  <FaUser style={{ color:"#fff", fontSize:"14px" }} />
                 </div>
                 <div>
-                  <h3 className="text-white font-semibold">
-                    {candidate.name}
-                  </h3>
-                  <p className="text-gray-300 text-sm">
-                    {candidate.title}
-                  </p>
-                  <p className="text-gray-400 text-xs">
-                    {candidate.experience} • {candidate.location}
-                  </p>
+                  <div className="candidate-name">{c.name}</div>
+                  <div className="candidate-title-text">{c.title}</div>
+                  <div className="candidate-meta">{c.experience} · {c.location}</div>
                 </div>
               </div>
 
-              {/* Match Score */}
-              <div className="flex items-center space-x-2">
-                <div
-                  className={`px-3 py-1 rounded-full bg-gradient-to-r ${getScoreColor(
-                    candidate.matchScore
-                  )} text-white text-sm font-bold`}
-                >
-                  {candidate.matchScore}%
+              {/* Score */}
+              <div style={{ display:"flex", alignItems:"center", gap:"6px", flexShrink:0 }}>
+                <div className="score-badge" style={{ background: getScoreGradient(c.matchScore) }}>
+                  {c.matchScore}%
                 </div>
-                <FaStar className="text-yellow-400" />
+                <FaStar style={{ color:"#f59e0b", fontSize:"13px" }} />
               </div>
             </div>
 
             {/* Status */}
-            <div className="mb-3">
-              <span
-                className={`px-2 py-1 rounded text-xs border ${getStatusColor(
-                  candidate.status
-                )}`}
-              >
-                {candidate.status}
+            <div style={{ marginBottom:"10px" }}>
+              <span className={`status-badge ${c.status === "Available" ? "status-available" : "status-interviewing"}`}>
+                <span style={{
+                  width:"6px", height:"6px", borderRadius:"50%",
+                  background: c.status === "Available" ? "#22c55e" : "#f59e0b",
+                  display:"inline-block"
+                }} />
+                {c.status}
               </span>
             </div>
 
             {/* Skills */}
-            <div className="flex flex-wrap gap-2 mb-4">
-              {candidate.skills.map((skill, index) => (
-                <span
-                  key={index}
-                  className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded text-xs border border-blue-500/30"
-                >
-                  {skill}
-                </span>
+            <div style={{ display:"flex", flexWrap:"wrap", gap:"6px", marginBottom:"12px" }}>
+              {c.skills.map((skill, i) => (
+                <span key={i} className="cand-skill-tag">{skill}</span>
               ))}
             </div>
 
             {/* Actions */}
-            <div className="flex space-x-2">
-              <button className="flex-1 flex items-center justify-center space-x-2 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-400 hover:to-purple-500 transition-all duration-300 text-sm">
-                <FaEye />
-                <span>View Profile</span>
+            <div style={{ display:"flex", gap:"8px" }}>
+              <button className="view-profile-btn">
+                <FaEye style={{ fontSize:"12px" }} />
+                View Profile
               </button>
-
-              <button className="p-2 bg-white/10 hover:bg-white/20 text-gray-300 rounded-lg transition-all duration-300">
-                <FaDownload />
-              </button>
-
-              <button className="p-2 bg-white/10 hover:bg-white/20 text-gray-300 rounded-lg transition-all duration-300">
-                <FaCommentDots />
-              </button>
+              <button className="icon-btn"><FaDownload /></button>
+              <button className="icon-btn"><FaCommentDots /></button>
             </div>
+
           </div>
         ))}
       </div>
 
       {/* Footer */}
-      <div className="mt-6 text-center">
-        <button className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200">
-          View All Candidates →
-        </button>
-      </div>
+      <button className="view-all-btn">View All Candidates →</button>
+
     </div>
   );
 };

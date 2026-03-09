@@ -1,143 +1,79 @@
-import React from "react";
-import {
-  FaStar,
-  FaMapMarkerAlt,
-  FaClock,
-  FaDollarSign,
-  FaArrowUp,
-} from "react-icons/fa";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FaStar, FaMapMarkerAlt, FaBookmark, FaExternalLinkAlt } from "react-icons/fa";
+
+const MATCHED = [
+  { id:1, title:"Senior Frontend Developer", company:"TechCorp Inc.", location:"San Francisco, CA", salary:"$120k–$160k", match:96, skills:["React","TypeScript"], remote:true },
+  { id:2, title:"Full Stack Engineer",       company:"DataFlow Labs",  location:"New York, NY",       salary:"$100k–$140k", match:88, skills:["JavaScript","Node.js"], remote:true },
+  { id:4, title:"DevOps Engineer",           company:"CloudNine",      location:"Seattle, WA",        salary:"$130k–$170k", match:79, skills:["AWS","Docker"],        remote:true },
+  { id:5, title:"React Native Developer",    company:"MobileFirst",    location:"Remote",             salary:"$60k–$90k",   match:74, skills:["React Native"],       remote:true },
+];
+
+const getMatchColor = (m) => m >= 90 ? "#22c55e" : m >= 80 ? "#3b82f6" : "#f59e0b";
 
 const JobMatches = () => {
-  const jobMatches = [
-    {
-      id: 1,
-      title: "Senior Frontend Developer",
-      company: "TechCorp Inc.",
-      location: "San Francisco, CA",
-      salary: "$120k - $150k",
-      matchScore: 94,
-      postedTime: "2 hours ago",
-      keywords: ["React", "TypeScript", "Node.js"],
-    },
-    {
-      id: 2,
-      title: "Full Stack Engineer",
-      company: "StartupXYZ",
-      location: "Remote",
-      salary: "$100k - $130k",
-      matchScore: 87,
-      postedTime: "5 hours ago",
-      keywords: ["JavaScript", "Python", "AWS"],
-    },
-    {
-      id: 3,
-      title: "React Developer",
-      company: "Digital Solutions",
-      location: "New York, NY",
-      salary: "$90k - $120k",
-      matchScore: 82,
-      postedTime: "1 day ago",
-      keywords: ["React", "Redux", "GraphQL"],
-    },
-  ];
+  const navigate = useNavigate();
+  const [saved, setSaved] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("savedJobs") || "[]"); } catch { return []; }
+  });
 
-  const getScoreColor = (score) => {
-    if (score >= 90) return "from-green-500 to-emerald-500";
-    if (score >= 80) return "from-blue-500 to-cyan-500";
-    return "from-yellow-500 to-orange-500";
+  const toggleSave = (id) => {
+    setSaved(prev => {
+      const next = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
+      localStorage.setItem("savedJobs", JSON.stringify(next));
+      return next;
+    });
   };
 
   return (
-    <div className="backdrop-blur-lg bg-white/5 rounded-xl p-6 border border-white/10">
-
-      {/* Header */}
-      <div className="flex items-center space-x-3 mb-6">
-        <div className="p-3 rounded-xl bg-gradient-to-r from-green-500 to-blue-500">
-          <FaStar className="text-white" />
+    <div className="job-matches-panel">
+      <div className="job-matches-header">
+        <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
+          <FaStar style={{ color:"#f59e0b" }} />
+          <span className="job-matches-title">AI Job Matches</span>
         </div>
-        <div>
-          <h2 className="text-xl font-bold text-white">Job Matches</h2>
-          <p className="text-gray-300 text-sm">Based on your resume</p>
-        </div>
+        <span className="job-matches-count">{MATCHED.length} matches</span>
       </div>
 
-      {/* Match Cards */}
-      <div className="space-y-4">
-        {jobMatches.map((job) => (
-          <div
-            key={job.id}
-            className="group backdrop-blur-lg bg-white/5 rounded-lg p-4 border border-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer"
-          >
-
-            {/* Header */}
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex-1">
-                <h3 className="text-white font-semibold group-hover:text-blue-400 transition-colors duration-200">
-                  {job.title}
-                </h3>
-                <p className="text-gray-300 text-sm">{job.company}</p>
+      <div className="job-matches-list">
+        {MATCHED.map(job => (
+          <div key={job.id} className="job-match-card">
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:"8px" }}>
+              <div style={{ flex:1, minWidth:0 }}>
+                <div className="jm-title">{job.title}</div>
+                <div className="jm-company">{job.company}</div>
               </div>
-
-              {/* Match Score */}
-              <div className="flex items-center space-x-2">
-                <div
-                  className={`px-3 py-1 rounded-full bg-gradient-to-r ${getScoreColor(
-                    job.matchScore
-                  )} text-white text-sm font-bold`}
-                >
-                  {job.matchScore}%
+              <div style={{ display:"flex", alignItems:"center", gap:"6px", flexShrink:0 }}>
+                <div className="jm-match-badge" style={{ background: getMatchColor(job.match) }}>
+                  {job.match}%
                 </div>
-                <FaArrowUp className="text-green-400 text-sm" />
+                <button className={`jm-save-btn ${saved.includes(job.id) ? "saved" : ""}`}
+                  onClick={() => toggleSave(job.id)}>
+                  <FaBookmark />
+                </button>
               </div>
             </div>
 
-            {/* Details */}
-            <div className="grid grid-cols-2 gap-4 mb-3 text-sm">
-              <div className="flex items-center space-x-2 text-gray-300">
-                <FaMapMarkerAlt />
-                <span>{job.location}</span>
-              </div>
-              <div className="flex items-center space-x-2 text-gray-300">
-                <FaClock />
-                <span>{job.postedTime}</span>
-              </div>
+            <div style={{ display:"flex", alignItems:"center", gap:"12px", marginBottom:"10px" }}>
+              <span className="jm-meta"><FaMapMarkerAlt style={{ fontSize:"10px" }} /> {job.location}</span>
+              <span className="jm-meta">{job.salary}</span>
+              {job.remote && <span className="jm-remote-tag">Remote</span>}
             </div>
 
-            <div className="flex items-center space-x-2 text-gray-300 text-sm mb-3">
-              <FaDollarSign />
-              <span>{job.salary}</span>
+            <div style={{ display:"flex", gap:"6px", marginBottom:"12px", flexWrap:"wrap" }}>
+              {job.skills.map((s,i) => <span key={i} className="jm-skill">{s}</span>)}
             </div>
 
-            {/* Keywords */}
-            <div className="flex flex-wrap gap-2">
-              {job.keywords.map((keyword, index) => (
-                <span
-                  key={index}
-                  className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded text-xs border border-blue-500/30"
-                >
-                  {keyword}
-                </span>
-              ))}
-            </div>
-
-            {/* Button */}
-            <div className="mt-4 pt-3 border-t border-white/10">
-              <button className="w-full py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-400 hover:to-purple-500 transition-all duration-300">
-                Apply Now
-              </button>
-            </div>
-
+            <button className="jm-apply-btn" onClick={() => navigate(`/jobs/${job.id}`)}>
+              <FaExternalLinkAlt style={{ fontSize:"11px" }} /> View & Apply
+            </button>
           </div>
         ))}
       </div>
 
-      {/* Footer */}
-      <div className="mt-6 text-center">
-        <button className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200">
-          View All Matches →
-        </button>
-      </div>
-
+      <button className="jm-view-all" onClick={() => navigate("/jobs")}>
+        Browse All Jobs →
+      </button>
     </div>
   );
 };
