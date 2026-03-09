@@ -16,7 +16,7 @@ import EmployerDashboard from "./components/EmployerDashboard";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 
-import NotFound from "./components/NotFound";
+import NotFound from "./components/NotFoundTemp";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import { ToastProvider } from "./components/ToastProvider";
